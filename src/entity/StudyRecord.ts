@@ -17,6 +17,9 @@ export class StudyRecord {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({nullable: true, type: 'date'})
+  date: Date
+
   @ManyToOne(() => User)
   @JoinColumn({
     name: "user_id",
