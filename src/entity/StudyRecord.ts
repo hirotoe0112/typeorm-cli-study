@@ -1,0 +1,29 @@
+import { Entity, Column, JoinColumn, PrimaryColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Material } from "./Material"
+import { User } from "./User"
+
+/**
+ * 勉強履歴テーブル
+ */
+@Entity()
+export class StudyRecord {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @ManyToOne(() => User)
+    @JoinColumn({
+        name: 'user_id',
+        referencedColumnName: 'id',
+    })
+    readonly user: User
+
+    @ManyToOne(() => Material, {nullable: true})
+    @JoinColumn({
+        name: 'material_id',
+        referencedColumnName: 'id',
+    })
+    readonly material?: Material
+
+    @Column()
+    minutes: number
+}
