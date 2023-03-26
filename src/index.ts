@@ -1,5 +1,6 @@
 import { AppDataSource } from "./data-source"
 import { Material } from "./entity/Material"
+import { StudyRecord } from "./entity/StudyRecord"
 import { User } from "./entity/User"
 
 AppDataSource.initialize().then(async () => {
@@ -18,6 +19,10 @@ AppDataSource.initialize().then(async () => {
     if(materials.length === 0){
         await insertMaterialData()
     }
+
+    // 勉強履歴テーブルに登録
+    await insertStudyRecord()
+
 }).catch(error => console.log(error))
 
 const insertUserData = async() => {
@@ -197,4 +202,20 @@ const insertMaterialData = async() => {
         materials.push(material)
     }
     await AppDataSource.manager.save(materials, {chunk: 100})
+}
+
+const insertStudyRecord = async() => {
+    // ユーザデータと教材データの取得
+    const users = await AppDataSource.manager.find(User)
+    const materials = await AppDataSource.manager.find(Material)
+
+    const studyRecords = []
+    for(let i = 0; i < 100; i++){
+        const studyRecord = new StudyRecord()
+        studyRecord.user = users[Math.floor(Math.random() * users.length)]
+        studyRecord.material = materials[Math.floor(Math.random() * materials.length)]
+        studyRecord.minutes = Math.floor(Math.random() * 111) + 10
+        studyRecords.push(studyRecord)
+    }
+    await AppDataSource.manager.save(studyRecords, {chunk: 100})
 }
