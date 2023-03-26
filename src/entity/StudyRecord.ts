@@ -15,14 +15,14 @@ export class StudyRecord {
         name: 'user_id',
         referencedColumnName: 'id',
     })
-    readonly user: User
+    user: User
 
     @ManyToOne(() => Material, {nullable: true})
     @JoinColumn({
         name: 'material_id',
         referencedColumnName: 'id',
     })
-    readonly material?: Material
+    material?: Material
 
     @Column()
     minutes: number
