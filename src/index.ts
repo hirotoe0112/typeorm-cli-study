@@ -301,13 +301,18 @@ const insertStudyRecord = async () => {
   const users = await AppDataSource.manager.find(User);
   const materials = await AppDataSource.manager.find(Material);
 
+  // 起動するたびにデータ登録件数をランダムにする
+  const recordCount = Math.floor(Math.random() * 50) + 1
+
   const studyRecords = [];
-  for (let i = 0; i < 100; i++) {
+  const today = new Date()
+  for (let i = 0; i < recordCount; i++) {
     const studyRecord = new StudyRecord();
     studyRecord.user = users[Math.floor(Math.random() * users.length)];
     studyRecord.material =
       materials[Math.floor(Math.random() * materials.length)];
     studyRecord.minutes = Math.floor(Math.random() * 111) + 10;
+    studyRecord.date = today
     studyRecords.push(studyRecord);
   }
   await AppDataSource.manager.save(studyRecords, { chunk: 100 });
